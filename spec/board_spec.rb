@@ -1,6 +1,7 @@
 class Board
   require 'colorize'
-  attr_reader :row_size, :board
+  attr_reader :row_size
+  attr_accessor :board  #needed for quicker testing but we never assign board values this way
 
   def initialize(row_size=3)
     @row_size = row_size
@@ -23,6 +24,29 @@ class Board
       end
     end
   end 
+
+def winner?
+  return true if check_for_horizontal_winner
+  return true if check_for_vertical_winner
+  return true if check_for_diagonal_winner
+  false
+end
+
+def check_for_horizontal_winner
+  @board.each do |row|
+    return true if row.uniq==[1] || row.uniq==[2]
+  end
+  false
+end
+
+def check_for_vertical_winner
+end
+
+def check_for_diagonal_winner
+end
+
+def check_for_full_board
+end
 
 private 
 
@@ -84,5 +108,32 @@ describe Board do
     board.clear_squares
     expect(board.board.flatten.uniq).to eq([0])
   end
-  
+
+  describe "it checks for a horizontal winner" do
+    it "returns false if there is no winner" do 
+      expect(board.check_for_horizontal_winner).to eq(false)
+    end
+    
+    it "returns true if the top row is filled" do
+      board.board=[[1,1,1],[0,0,0],[0,0,0]]
+      expect(board.check_for_horizontal_winner).to eq(true)
+    end
+    
+    it "returns true if the middle row is filled" do
+      board.board=[[0,0,0], [1,1,1], [0,0,0]]
+      expect(board.check_for_horizontal_winner).to eq(true)
+    end
+
+    it "returns true if the bottom row is filled" do
+      board.board=[[0,0,0], [0,0,0], [1,1,1]] 
+      expect(board.check_for_horizontal_winner).to eq(true)
+    end
+  end
+
+  describe "it checks for a vertical winner" do 
+    it "returns false if there is no winner" do
+      expect(board.check_for_vertical_winner).to eq(false)
+    end
+  end
+
 end
