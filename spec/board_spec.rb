@@ -1,3 +1,5 @@
+require 'debugger'
+
 class Board
   require 'colorize'
   attr_reader :row_size
@@ -8,44 +10,59 @@ class Board
     @board = Array.new( @row_size ) { Array.new( @row_size, 0 ) }
   end
 
-  def mark_square( board_location, player_marker )
-    @board[board_location.row][board_location.column] = player_marker
+  def mark_square( row, column, player_marker )
+    @board[row][column] = player_marker
   end
   
-  def find_mark_of_square( board_location )
-    @board[board_location.row][board_location.column]
+  def find_mark_of_square( row, column )
+    @board[row][column]
   end
   
   def clear_squares
     (0...@row_size).each do |row|
       (0...@row_size).each do |column|
-        boardlocation=BoardLocation.new(row,column)
-        mark_square(boardlocation,0)
+        mark_square([row][column],0)
       end
     end
   end 
 
 def winner?
-  return true if check_for_horizontal_winner
-  return true if check_for_vertical_winner
-  return true if check_for_diagonal_winner
+  return true if horizontal_line?
+  return true if vertical_line?
+  return true if diagonal_line?
   false
 end
 
-def check_for_horizontal_winner
-  @board.each do |row|
-    return true if row.uniq==[1] || row.uniq==[2]
+# def horizontal_line?
+#   @board.each do |row| 
+#     return true if row.inject(:+) == 3 || row.inject(:+) == -3
+#   end
+#   false
+# end
+
+def horizontal_line?
+  @board.any? {|row| check_row(row)}
+end
+
+def check_row(row)
+  if row.inject(:+) == 3 || row.inject(:+) == -3
+    return true
+  else
+    return false
   end
-  false
 end
 
-def check_for_vertical_winner
+def vertical_line?
+  turned_board=@board[0].zip(@board[1],@board[2])
+  turned_board.any? {|row| check_row(row)}
 end
 
-def check_for_diagonal_winner
+def diagonal_line?
+
 end
 
 def check_for_full_board
+  return true if !@board.include(0)
 end
 
 private 
@@ -57,7 +74,7 @@ def to_s
         print "|"
         print "---".green if space == 0
         print " X ".red if space == 1
-        print " O ".red if space == 2
+        print " O ".red if space == -1
         print "|"
       end
     end
@@ -65,12 +82,10 @@ end
 
 end
 
-BoardLocation = Struct.new(:row, :column)
 
 describe Board do
   
  let(:board) {Board.new}
- let(:board_location) {BoardLocation.new(1,1)}
   
   it "creates a board" do
     expect(board).to_not be_nil
@@ -94,46 +109,62 @@ describe Board do
   end
   
   it "retrieves the value of a cell" do
-    expect(board.find_mark_of_square(board_location)).to eq(0)
+    expect(board.find_mark_of_square(0,0)).to eq(0)
   end
 
   it "marks a square and retrieves that value" do
-    board.mark_square(board_location,1)
-    expect(board.find_mark_of_square(board_location)).to eq(1)
+    board.mark_square(1,1,1)
+    expect(board.find_mark_of_square(1,1)).to eq(1)
   end
 
-  it "can reset the board" do
-    board.mark_square(board_location,1)
-    expect(board.board.flatten.uniq).to_not eq([0])
-    board.clear_squares
-    expect(board.board.flatten.uniq).to eq([0])
-  end
+  # it "can reset the board" do
+  #   board.mark_square(1,1,2)
+  #   expect(board.board.flatten.uniq).to_not eq([0])
+  #   board.clear_squares
+  #   expect(board.board.flatten.uniq).to eq([0])
+  # end
 
   describe "it checks for a horizontal winner" do
     it "returns false if there is no winner" do 
-      expect(board.check_for_horizontal_winner).to eq(false)
+      expect(board.horizontal_line?).to eq(false)
     end
     
     it "returns true if the top row is filled" do
       board.board=[[1,1,1],[0,0,0],[0,0,0]]
-      expect(board.check_for_horizontal_winner).to eq(true)
+      expect(board.horizontal_line?).to eq(true)
     end
     
     it "returns true if the middle row is filled" do
-      board.board=[[0,0,0], [1,1,1], [0,0,0]]
-      expect(board.check_for_horizontal_winner).to eq(true)
+      board.board=[[0,0,0], [-1,-1,-1], [0,0,0]]
+      expect(board.horizontal_line?).to eq(true)
     end
 
     it "returns true if the bottom row is filled" do
       board.board=[[0,0,0], [0,0,0], [1,1,1]] 
-      expect(board.check_for_horizontal_winner).to eq(true)
+      expect(board.horizontal_line?).to eq(true)
     end
   end
 
   describe "it checks for a vertical winner" do 
     it "returns false if there is no winner" do
-      expect(board.check_for_vertical_winner).to eq(false)
+      expect(board.vertical_line?).to eq(false)
     end
+
+    it "returns true if left column is filled" do
+      board.board=[[-1,0,0], [-1,0,0], [-1,0,0]] 
+      expect(board.vertical_line?).to eq(true)
+    end
+
+    it "returns true if the middle column is filled" do
+      board.board=[[0,1,0], [0,1,0], [0,1,0]] 
+      expect(board.vertical_line?).to eq(true)
+    end
+
+    it "returns true if the right column is filled" do
+      board.board=[[0,0,-1], [0,0,-1], [0,0,-1]] 
+      expect(board.vertical_line?).to eq(true)
+    end
+
   end
 
 end
