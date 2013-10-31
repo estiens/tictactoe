@@ -3,6 +3,7 @@ require_relative 'spec_helper'
 describe Board do
   
  let(:board) {Board.new}
+ let(:board4) {Board.new(4)}
   
   it "creates a board" do
     expect(board).to_not be_nil
@@ -15,10 +16,9 @@ describe Board do
   end
 
    it "can create a board of 4 rows and 16 squares" do
-    board2=Board.new(4)
-    expect(board2.board.size).to eq(4)
-    expect(board2.board[0].size).to eq(4)
-    expect(board2.board.flatten.size).to eq(16)
+    expect(board4.board.size).to eq(4)
+    expect(board4.board[0].size).to eq(4)
+    expect(board4.board.flatten.size).to eq(16)
   end
 
   it "initializes all cells to 0" do
@@ -106,6 +106,20 @@ describe Board do
       expect(board.winner?).to eq true
     end
   
+  end
+
+  describe "it passes cursory checks for a 4x4 board" do
+
+    it "returns true if there is a horizontal winner" do
+      board4.board=[1,0,0,0],[1,0,0,0],[1,0,0,0],[1,0,0,0]
+      expect(board4.winner?).to eq true
+    end
+
+    it "returns true if there is a vertical winner" do
+      board4.board=[[-1,-1,-1,-1],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+      expect(board4.winner?).to eq true
+    end
+
   end
 
 end

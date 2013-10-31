@@ -35,6 +35,19 @@ class Board
     false
   end
 
+  def to_s
+      @board.each do |row|
+        print "\n"
+        row.each do |space|
+          print "|"
+          print "---".green if space == 0
+          print " X ".red if space == 1
+          print " O ".red if space == -1
+          print "|"
+        end
+      end
+  end
+
 private
 
   def horizontal_line?
@@ -42,7 +55,7 @@ private
   end
 
   def check_row(row)
-    if row.inject(:+) == 3 || row.inject(:+) == -3
+    if row.inject(:+) == row.size || row.inject(:+) == -row.size
       return true
     else
       return false
@@ -72,17 +85,6 @@ private
     false
   end
 
-  def to_s
-      @board.each do |row|
-        print "\n"
-        row.each do |space|
-          print "|"
-          print "---".green if space == 0
-          print " X ".red if space == 1
-          print " O ".red if space == -1
-          print "|"
-        end
-      end
-  end
+  
 
 end
