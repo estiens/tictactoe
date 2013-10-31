@@ -27,10 +27,7 @@ class Board
   end 
 
 def winner?
-  return true if horizontal_line?
-  return true if vertical_line?
-  return true if diagonal_line?
-  false
+  horizontal_line? || vertical_line? || left_diagonal_line? || right_diagonal_line?
 end
 
 # def horizontal_line?
@@ -57,8 +54,22 @@ def vertical_line?
   turned_board.any? {|row| check_row(row)}
 end
 
-def diagonal_line?
+def left_diagonal_line? #can we refactor this to not use sum and use inject?
+  sum = 0
+  @board.each_with_index do |row,index|
+    sum += row[index]
+  end
+  return true if sum == 3 || sum == -3
+  false
+end
 
+def right_diagonal_line?
+  sum=0
+  @board.each_with_index do |row,index|
+    sum += row[(row.length-1)-index]
+  end
+  return true if sum == 3 || sum == -3
+  false
 end
 
 def check_for_full_board
@@ -124,45 +135,57 @@ describe Board do
   #   expect(board.board.flatten.uniq).to eq([0])
   # end
 
-  describe "it checks for a horizontal winner" do
+  describe "it returns false if there is no winner" do
     it "returns false if there is no winner" do 
-      expect(board.horizontal_line?).to eq(false)
+      expect(board.winner?).to eq(false)
     end
+  end
+
+  describe "it checks for a horizontal winner" do
     
     it "returns true if the top row is filled" do
       board.board=[[1,1,1],[0,0,0],[0,0,0]]
-      expect(board.horizontal_line?).to eq(true)
+      expect(board.winner?).to eq(true)
     end
     
     it "returns true if the middle row is filled" do
       board.board=[[0,0,0], [-1,-1,-1], [0,0,0]]
-      expect(board.horizontal_line?).to eq(true)
+      expect(board.winner?).to eq(true)
     end
 
     it "returns true if the bottom row is filled" do
       board.board=[[0,0,0], [0,0,0], [1,1,1]] 
-      expect(board.horizontal_line?).to eq(true)
+      expect(board.winner?).to eq(true)
     end
   end
 
   describe "it checks for a vertical winner" do 
-    it "returns false if there is no winner" do
-      expect(board.vertical_line?).to eq(false)
-    end
 
     it "returns true if left column is filled" do
       board.board=[[-1,0,0], [-1,0,0], [-1,0,0]] 
-      expect(board.vertical_line?).to eq(true)
+      expect(board.winner?).to eq(true)
     end
 
     it "returns true if the middle column is filled" do
       board.board=[[0,1,0], [0,1,0], [0,1,0]] 
-      expect(board.vertical_line?).to eq(true)
+      expect(board.winner?).to eq(true)
     end
 
     it "returns true if the right column is filled" do
       board.board=[[0,0,-1], [0,0,-1], [0,0,-1]] 
-      expect(board.vertical_line?).to eq(true)
+      expect(board.winner?).to eq(true)
+    end
+  end
+
+  describe "it checks for a diagonal winner" do
+    it "returns true if the upper left-lower right diagonal is filled" do
+      board.board=[[1,0,0],[0,1,0],[0,0,1]]
+      expect(board.winner?).to eq true
+    end
+
+    it "returns true if the upper right-lower left diagonal is filled" do
+      board.board=[[0,0,-1],[0,-1,0],[-1,0,0]]
+      expect(board.winner?).to eq true
     end
 
   end
