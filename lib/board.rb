@@ -36,16 +36,18 @@ class Board
   end
 
   def to_s
-      @board.each do |row|
+      @board.each_with_index do |row,row_index|
         print "\n"
+        print "Row #{row_index}   "
         row.each do |space|
           print "|"
           print "---".green if space == 0
           print " X ".red if space == 1
           print " O ".red if space == -1
-          print "|"
+          print "|  "
         end
       end
+      print "\n          0      1      2   Columns"
   end
 
 private
