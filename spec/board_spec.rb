@@ -41,6 +41,15 @@ describe Board do
   #   expect(board.board.flatten.uniq).to eq([0])
   # end
 
+  it "checks for a tie and returns false when no tie" do
+    expect(board.tie?).to eq false
+  end
+
+  it "checks for a tie and returns true when there is a tie" do
+    board.board=[[1,-1,1],[-1,1,1],[-1,1,-1]]
+    expect(board.tie?).to eq true
+  end
+
   describe "it returns false if there is no winner" do
     it "returns false if there is no winner" do 
       expect(board.winner?).to eq(false)
@@ -63,6 +72,7 @@ describe Board do
       board.board=[[0,0,0], [0,0,0], [1,1,1]] 
       expect(board.winner?).to eq(true)
     end
+
   end
 
   describe "it checks for a vertical winner" do 
@@ -81,9 +91,11 @@ describe Board do
       board.board=[[0,0,-1], [0,0,-1], [0,0,-1]] 
       expect(board.winner?).to eq(true)
     end
+
   end
 
   describe "it checks for a diagonal winner" do
+    
     it "returns true if the upper left-lower right diagonal is filled" do
       board.board=[[1,0,0],[0,1,0],[0,0,1]]
       expect(board.winner?).to eq true
@@ -93,7 +105,7 @@ describe Board do
       board.board=[[0,0,-1],[0,-1,0],[-1,0,0]]
       expect(board.winner?).to eq true
     end
-
+  
   end
 
 end

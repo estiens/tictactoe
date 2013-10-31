@@ -26,69 +26,63 @@ class Board
     end
   end 
 
-def winner?
-  horizontal_line? || vertical_line? || left_diagonal_line? || right_diagonal_line?
-end
-
-# def horizontal_line?
-#   @board.each do |row| 
-#     return true if row.inject(:+) == 3 || row.inject(:+) == -3
-#   end
-#   false
-# end
-
-def horizontal_line?
-  @board.any? {|row| check_row(row)}
-end
-
-def check_row(row)
-  if row.inject(:+) == 3 || row.inject(:+) == -3
-    return true
-  else
-    return false
+  def winner?
+    horizontal_line? || vertical_line? || left_diagonal_line? || right_diagonal_line?
   end
-end
 
-def vertical_line?
-  turned_board=@board[0].zip(@board[1],@board[2])
-  turned_board.any? {|row| check_row(row)}
-end
-
-def left_diagonal_line? #can we refactor this to not use sum and use inject?
-  sum = 0
-  @board.each_with_index do |row,index|
-    sum += row[index]
+  def tie?
+    return true if !@board.flatten.include?(0) && !self.winner?
+    false
   end
-  return true if sum == 3 || sum == -3
-  false
-end
 
-def right_diagonal_line?
-  sum=0
-  @board.each_with_index do |row,index|
-    sum += row[(row.length-1)-index]
+private
+
+  def horizontal_line?
+    @board.any? {|row| check_row(row)}
   end
-  return true if sum == 3 || sum == -3
-  false
-end
 
-def check_for_full_board
-  return true if !@board.include(0)
-end
-
-private 
-
-def to_s
-    @board.each do |row|
-      print "\n"
-      row.each do |space|
-        print "|"
-        print "---".green if space == 0
-        print " X ".red if space == 1
-        print " O ".red if space == -1
-        print "|"
-      end
+  def check_row(row)
+    if row.inject(:+) == 3 || row.inject(:+) == -3
+      return true
+    else
+      return false
     end
-end
+  end
+
+  def vertical_line?
+    turned_board=@board[0].zip(@board[1],@board[2])
+    turned_board.any? {|row| check_row(row)}
+  end
+
+  def left_diagonal_line? #can we refactor this to not use sum and use inject?
+    sum = 0
+    @board.each_with_index do |row,index|
+      sum += row[index]
+    end
+    return true if sum == 3 || sum == -3
+    false
+  end
+
+  def right_diagonal_line?
+    sum=0
+    @board.each_with_index do |row,index|
+      sum += row[(row.length-1)-index]
+    end
+    return true if sum == 3 || sum == -3
+    false
+  end
+
+  def to_s
+      @board.each do |row|
+        print "\n"
+        row.each do |space|
+          print "|"
+          print "---".green if space == 0
+          print " X ".red if space == 1
+          print " O ".red if space == -1
+          print "|"
+        end
+      end
+  end
 
 end
