@@ -1,6 +1,5 @@
-require_relative 'board.rb'
 require_relative 'player.rb'
-require_relative 'ai_player.rb'
+
 
 class HumanPlayer < Player
 
@@ -37,34 +36,6 @@ attr_reader :board, :mark_value
 
 end
 
-class Game
-  attr_accessor :board, :player1, :player2, :current_player
-  
-  def initialize
-    @board=Board.new
-    @player1=HumanPlayer.new(board)
-    @player2=AiPlayer.new(board)
-    @current_player=@player2
-  end
-
-  def play_game
-    until @board.winner? || @board.tie?
-    switch_player
-    print "\n"
-    board.to_s
-    @current_player.play_turn
-    end
-    board.to_s
-    puts "Winner!"
-  end
-
-  def switch_player
-    @current_player == @player1 ? @current_player = @player2 : @current_player = @player1
-  end
-
-end
-
-Game.new.play_game
 
 
 

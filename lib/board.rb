@@ -36,6 +36,7 @@ class Board
   end
 
   def to_s
+    print "\n"
       @board.each_with_index do |row,row_index|
         print "\n"
         print "Row #{row_index}   "
