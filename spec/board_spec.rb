@@ -122,4 +122,15 @@ describe Board do
 
   end
 
+  describe "#all valid moves" do
+    it "returns all valid moves" do
+      expect(board.all_valid_moves).to eq([[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]])
+    end
+
+    it "returns all valid moves when some are taken" do
+      board.board=[[1,1,1], [-1,-1,-1], [0,0,0]]
+      expect(board.all_valid_moves).to eq([[2,0],[2,1],[2,2]])
+    end
+  end
+
 end

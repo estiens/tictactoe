@@ -2,7 +2,7 @@ require 'debugger'
 
 class Board
   require 'colorize'
-  attr_reader :row_size
+  attr_reader :row_size, :game
   attr_accessor :board  #needed for quicker testing but we never assign board values this way
 
   def initialize(row_size=3)
@@ -27,7 +27,8 @@ class Board
   end 
 
   def winner?
-    horizontal_line? || vertical_line? || left_diagonal_line? || right_diagonal_line?
+    return true if horizontal_line? || vertical_line? || left_diagonal_line? || right_diagonal_line?
+    false
   end
 
   def tie?
@@ -51,7 +52,7 @@ class Board
       print "\n          0      1      2   Columns"
   end
 
-private
+
 
   def horizontal_line?
     @board.any? {|row| check_row(row)}
@@ -88,6 +89,13 @@ private
     false
   end
 
-  
-
+  def all_valid_moves
+    valid_moves=[]
+    @board.each_with_index do |row, rowindex|
+      row.each_with_index do |space, columnindex|
+        valid_moves << [rowindex,columnindex] if space == 0
+      end
+    end
+    valid_moves
+  end
 end

@@ -20,12 +20,12 @@ class Game
     switch_player
     end
     board.to_s
-    puts "Winner!"
+    puts "Winner! is #{@board.winner}"
   end
   
   def switch_player
+    @current_player.turn += 1
     @current_player == @player1 ? @current_player = @player2 : @current_player = @player1
-    @turn += 1
   end
 
   def choose_first_player
