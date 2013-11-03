@@ -17,6 +17,11 @@ class Board
   def find_mark_of_square( row, column )
     @board[row][column]
   end
+
+  def empty?(row,column)
+    return true if find_mark_of_square(row,column) == 0
+    false
+  end
   
   def clear_squares
     (0...@row_size).each do |row|
@@ -37,16 +42,18 @@ class Board
   end
 
   def to_s
+    space_counter = 1
     print "\n"
       @board.each_with_index do |row,row_index|
         print "\n"
         print "Row #{row_index}   "
         row.each do |space|
           print "|"
-          print "---".green if space == 0
+          print "-#{space_counter}-".green if space == 0
           print " X ".red if space == 1
           print " O ".red if space == -1
           print "|  "
+          space_counter += 1
         end
       end
       print "\n          0      1      2   Columns"
@@ -89,7 +96,7 @@ class Board
     false
   end
 
-  def all_valid_moves
+  def all_valid_moves #refactor to include empty?
     valid_moves=[]
     @board.each_with_index do |row, rowindex|
       row.each_with_index do |space, columnindex|

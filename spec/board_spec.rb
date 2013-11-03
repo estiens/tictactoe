@@ -133,4 +133,15 @@ describe Board do
     end
   end
 
+  describe "#empty" do
+    it "returns true when a space is empty" do
+      expect(board.empty?(0,0)).to eq true
+    end
+    it "returns false when a space is not empty" do
+      board.mark_square(0,0,1)
+      expect(board.empty?(0,0)).to eq false
+    end
+  end
+
 end
+
