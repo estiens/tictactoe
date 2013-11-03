@@ -2,12 +2,11 @@ require_relative 'player'
 
 class AiPlayer < Player
 
-attr_reader :board, :mark_value, :coordinates, :game, :opposing_mark_value
-attr_accessor :turn
+attr_reader :board, :mark_value, :opposing_mark_value
+attr_accessor :turn, :coordinates
 
   def initialize(board,game,mark_value=-1)
     @board=board
-    @game=game
     @mark_value=mark_value
     @opposing_mark_value = -@mark_value
     @coordinates=[]
@@ -25,11 +24,13 @@ attr_accessor :turn
       mark_space(check_for_self_winner)
     elsif check_for_opponent_winner
       mark_space(check_for_opponent_winner)
-    elsif check_for_self_fork
-      mark_space(check_for_self_fork)
+    elsif hard_code_for_isolated_cases
+      mark_space(hard_code_for_isolated_cases)
     elsif check_for_opponent_fork
-      puts "There was a fork possible"
       mark_space(check_for_opponent_fork)
+    elsif check_for_self_fork
+      puts "There was a fork possible"
+      mark_space(check_for_self_fork)
     else
       play_random_move
     end
@@ -96,10 +97,11 @@ attr_accessor :turn
     return false if winner.length <= 1
   end
 
-  def check_for_opponent_fork
+  def check_for_opponent_fork2
     forkable_space=[]
     winner=[]
     @board.all_valid_moves.each do |valid_move|
+      winner=[]
       previous_value = @board.find_mark_of_square(valid_move[0],valid_move[1])
       @board.mark_square(valid_move[0],valid_move[1],@opposing_mark_value)
       forkable_space=[valid_move[0],valid_move[1]]
@@ -113,6 +115,47 @@ attr_accessor :turn
     end
     return forkable_space if winner.length > 1
     return false if winner.length <= 1
+  end
+
+    def check_for_opponent_fork
+    winner=[]
+    forkable_space=[]
+    @board.all_valid_moves.each do |valid_move|
+      winner=[]
+      previous_value = @board.find_mark_of_square(valid_move[0],valid_move[1])
+      @board.mark_square(valid_move[0],valid_move[1],@opposing_mark_value)
+      forkable_space=[valid_move[0],valid_move[1]]
+      @board.all_valid_moves.each do |opponent_move|
+        previous_opponent_value = @board.find_mark_of_square(opponent_move[0],opponent_move[1])
+        @board.mark_square(opponent_move[0],opponent_move[1],@opposing_mark_value)
+        @board.all_valid_moves.each do |second_move|
+          previous_second_value = @board.find_mark_of_square(second_move[0],second_move[1])
+          @board.mark_square(second_move[0],second_move[1],@opposing_mark_value)
+          winner << second_move if @board.winner?
+          @board.mark_square(second_move[0],second_move[1],previous_second_value)
+        break if winner.length>1 
+        end
+        @board.mark_square(opponent_move[0],opponent_move[1], previous_opponent_value)
+        break if winner.length>1
+        end
+      @board.mark_square(valid_move[0],valid_move[1],previous_value)
+      break if winner.length>1
+    end
+    return forkable_space if winner.length > 1
+    return false if winner.length <= 1
+  end
+
+  def hard_code_for_isolated_cases
+    # these are here because they were the only two forking conditions not being caught by the method. Method should be fixed 
+    # and ideally all ported to minimax algorithm
+
+    if (@board.find_mark_of_square(0,0) == @opposing_mark_value) && (@board.find_mark_of_square(2,1) == @opposing_mark_value)
+      return [2,0] if check_inputs([2,0])
+    elsif (@board.find_mark_of_square(0,2) == @opposing_mark_value) && (@board.find_mark_of_square(2,1) == @opposing_mark_value)
+      return [2,2] if check_inputs([2,2])
+    else
+      return false
+    end
   end
 
   def check_for_opponent_winner
@@ -129,25 +172,6 @@ attr_accessor :turn
     return false if blocker.empty?
   end
 
-  def check_for_fork
-    if ((@board.find_mark_of_square(0,0)==@opposing_mark_value && @board.find_mark_of_square(2,2)==@opposing_mark_value))
-      return [0,2] if board.empty?(0,2)
-      return [2,0] if board.empty?(2,0)
-    elsif ((@board.find_mark_of_square(0,2)==@opposing_mark_value && @board.find_mark_of_square(2,0)==@opposing_mark_value))
-    end
-  end
-  # # If it's a unique winning case where the user can get two possible winning spaces
-  #   # Check if the user has one move on two corners in any diagonal
-  #   if ((@board[:a1] == @user && @board[:c3] == @user) || (@board[:a3] == @user && @board[:c1] == @user)) && @board[:b2] == @cpu && who == "user"
-  #     # Decide move
-  #     if @board[:a2] == " " && @board[:c2] == " "
-  #       pos = rand() > 0.5 ? 7 : 3
-  #     elsif @board[:a2] == " "
-  #       pos = 7
-  #     elsif @board[:c2] == " "
-  #       pos = 3
-  #     end
-  #   end
 
   def get_corner
     corners=[[0,0],[0,@board.row_size-1],[@board.row_size-1, 0], [@board.row_size-1,@board.row_size-1]]

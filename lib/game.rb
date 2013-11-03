@@ -1,6 +1,7 @@
 require_relative "human_player"
 require_relative "ai_player"
 require_relative "board"
+require_relative "dumb_ai_player"
 
 class Game
   attr_accessor :board, :player1, :player2, :current_player, :turn
@@ -43,7 +44,7 @@ class Game
     elsif player_choice == "c"
       @current_player=@player2
     elsif player_choice == "w"
-      @player1 = AiPlayer.new(board,self,1)
+      @player1 = DumbAi.new
       @current_player=@player2 
     else 
       puts "Sorry I need a [C] or [H]"
