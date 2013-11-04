@@ -1,22 +1,16 @@
-require_relative "human_player"
-require_relative "ai_player"
 require_relative "board"
-require_relative "dumb_ai_player"
 
 class Game
-  attr_accessor :board, :player1, :player2, :current_player, :turn
-  
+  attr_accessor :board, :player1, :player2, :current_player, :delay
+
   def initialize
     @board = Board.new
-    @player1 = HumanPlayer.new(board)
-    @player2 = AiPlayer.new(board,self)
-    @turn = 0
-
+    @delay = 0
   end
 
   def play_game
-    choose_first_player
     until @board.winner? || @board.tie?
+    sleep(delay)
     board.to_s
     @current_player.play_turn
     switch_player
@@ -36,21 +30,21 @@ class Game
     @current_player == @player1 ? @current_player = @player2 : @current_player = @player1
   end
 
-  def choose_first_player
-    puts "Would you like the [H]uman to start first, or the [C]omputer, or just [W]atch?"
-    player_choice=gets.chomp.downcase
-    if player_choice == "h"
-      @current_player=@player1 
-    elsif player_choice == "c"
-      @current_player=@player2
-    elsif player_choice == "w"
-      @player1 = DumbAi.new
-      @current_player=@player2 
-    else 
-      puts "Sorry I need a [C] or [H]"
-      choose_first_player
-    end
-  end
+  # def choose_first_player
+  #   puts "Would you like the [H]uman to start first, or the [C]omputer, or just [W]atch?"
+  #   player_choice=gets.chomp.downcase
+  #   if player_choice == "h"
+  #     @current_player=@player1 
+  #   elsif player_choice == "c"
+  #     @current_player=@player2
+  #   elsif player_choice == "w"
+  #     @player1 = AiPlayer.new(board,self)
+  #     @current_player=@player2 
+  #   else 
+  #     puts "Sorry I need a [C] or [H] or [W]"
+  #     choose_first_player
+  #   end
+  # end
 
 end
 

@@ -34,13 +34,6 @@ describe Board do
     expect(board.find_mark_of_square(1,1)).to eq(1)
   end
 
-  # it "can reset the board" do
-  #   board.mark_square(1,1,2)
-  #   expect(board.board.flatten.uniq).to_not eq([0])
-  #   board.clear_squares
-  #   expect(board.board.flatten.uniq).to eq([0])
-  # end
-
   it "checks for a tie and returns false when no tie" do
     expect(board.tie?).to eq false
   end

@@ -1,6 +1,5 @@
 class Player
 
-
   def mark_space(coordinates)
     @board.mark_square(coordinates[0], coordinates[1], mark_value )
   end
@@ -26,4 +25,5 @@ class Player
   def run_exit_check(input)
     exit if ["exit", "quit"].include?(input.downcase)
   end
+  
 end

@@ -1,11 +1,11 @@
-require_relative 'player'
+require './player.rb'
 
 class AiPlayer < Player
 
 attr_reader :board, :mark_value, :opposing_mark_value
 attr_accessor :turn, :coordinates
 
-  def initialize(board,game,mark_value=-1)
+  def initialize(board,mark_value=-1)
     @board=board
     @mark_value=mark_value
     @opposing_mark_value = -@mark_value
@@ -19,7 +19,7 @@ attr_accessor :turn, :coordinates
 
   def play_turn
     if @turn == 0 
-      play_first_and_second_turn
+      play_first_turn
     elsif check_for_self_winner
       mark_space(check_for_self_winner)
     elsif check_for_opponent_winner
@@ -37,13 +37,12 @@ attr_accessor :turn, :coordinates
   end
 
       
-  def play_first_and_second_turn
-    @coordinates=get_middle
-        if check_inputs(@coordinates)
-          mark_space(@coordinates)
-        else
-          play_corner
-        end
+  def play_first_turn
+    if check_inputs(get_middle)
+      mark_space(get_middle)
+    else
+      play_corner
+    end
   end
 
   def play_corner
