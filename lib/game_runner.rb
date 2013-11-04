@@ -1,8 +1,8 @@
 require_relative "game"
 require_relative "human_player"
-require './ai_players/ai_player'
-require './ai_players/medium_ai'
-require './ai_players/dumb_ai'
+require_relative "./ai_players/ai_player"
+require_relative "./ai_players/medium_ai"
+require_relative "./ai_players/dumb_ai"
 
 
 class Runner

@@ -41,12 +41,21 @@ class Board
     false
   end
 
+  def all_valid_moves 
+    valid_moves=[]
+    @board.each_with_index do |row, rowindex|
+      row.each_with_index do |space, columnindex|
+        valid_moves << [rowindex,columnindex] if space == 0
+      end
+    end
+    valid_moves
+  end
+
   def to_s
     space_counter = 1
     print "\n"
       @board.each_with_index do |row,row_index|
         print "\n"
-        print "Row #{row_index}   "
         row.each do |space|
           print "|"
           print "-#{space_counter}-".green if space == 0
@@ -56,10 +65,9 @@ class Board
           space_counter += 1
         end
       end
-      print "\n          0      1      2   Columns"
   end
 
-
+private 
 
   def horizontal_line?
     @board.any? {|row| check_row(row)}
@@ -96,13 +104,5 @@ class Board
     false
   end
 
-  def all_valid_moves #refactor to include empty?
-    valid_moves=[]
-    @board.each_with_index do |row, rowindex|
-      row.each_with_index do |space, columnindex|
-        valid_moves << [rowindex,columnindex] if space == 0
-      end
-    end
-    valid_moves
-  end
+  
 end

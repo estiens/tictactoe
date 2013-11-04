@@ -1,6 +1,5 @@
 require_relative 'player'
 
-
 class HumanPlayer < Player
 
 attr_reader :board, :mark_value, :game

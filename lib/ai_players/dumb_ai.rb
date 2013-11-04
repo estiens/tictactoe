@@ -1,3 +1,5 @@
+require_relative 'ai_player'
+
 class DumbAi < AiPlayer
 
   attr_reader :board, :mark_value, :opposing_mark_value
