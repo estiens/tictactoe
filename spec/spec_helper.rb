@@ -1,5 +1,4 @@
-require './lib/board.rb'
-require './lib/game.rb'
+require './lib/game_runner'
 
 RSpec.configure do |config|
   config.color_enabled = true

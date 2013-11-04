@@ -113,6 +113,11 @@ describe Board do
       expect(board4.winner?).to eq true
     end
 
+    it "returns true if there is a diagonal winner" do
+      board4.board=[[-1,0,0,0],[0,-1,0,0],[0,0,-1,0],[0,0,0,-1]]
+      expect(board4.winner?).to eq true
+    end
+
   end
 
   describe "#all valid moves" do
@@ -133,6 +138,15 @@ describe Board do
     it "returns false when a space is not empty" do
       board.mark_square(0,0,1)
       expect(board.empty?(0,0)).to eq false
+    end
+  end
+
+  describe '#clear_squares' do
+    it "clears all the squares on the board" do
+      board.mark_square(1,1,1)
+      board.mark_square(1,2,-1)
+      board.clear_squares
+      expect(board.board.flatten.uniq).to eq([0])
     end
   end
 

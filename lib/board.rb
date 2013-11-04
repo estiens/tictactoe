@@ -26,7 +26,7 @@ class Board
   def clear_squares
     (0...@row_size).each do |row|
       (0...@row_size).each do |column|
-        mark_square([row][column],0)
+        mark_square(row,column,0)
       end
     end
   end 
@@ -73,14 +73,6 @@ private
     @board.any? {|row| check_row(row)}
   end
 
-  def check_row(row)
-    if row.inject(:+) == row.size || row.inject(:+) == -row.size
-      return true
-    else
-      return false
-    end
-  end
-
   def vertical_line?
     turned_board=@board[0].zip(@board[1],@board[2])
     turned_board.any? {|row| check_row(row)}
@@ -91,7 +83,7 @@ private
     @board.each_with_index do |row,index|
       sum += row[index]
     end
-    return true if sum == 3 || sum == -3
+    return true if sum == @row_size || sum == -@row_size
     false
   end
 
@@ -100,8 +92,16 @@ private
     @board.each_with_index do |row,index|
       sum += row[(row.length-1)-index]
     end
-    return true if sum == 3 || sum == -3
+    return true if sum == @row_size || sum == -@row_size
     false
+  end
+
+  def check_row(row)
+    if row.inject(:+) == row.size || row.inject(:+) == -row.size
+      return true
+    else
+      return false
+    end
   end
 
   

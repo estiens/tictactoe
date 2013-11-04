@@ -21,9 +21,5 @@ class Player
   def run_range_checks(coordinates)
     check_input_for_range(coordinates[0]) && check_input_for_range(coordinates[1])
   end
-
-  def run_exit_check(input)
-    exit if ["exit", "quit"].include?(input.downcase)
-  end
   
 end

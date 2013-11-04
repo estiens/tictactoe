@@ -57,5 +57,3 @@ class Runner
 
 
 end
-
-Runner.new.run_game

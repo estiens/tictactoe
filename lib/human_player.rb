@@ -2,13 +2,12 @@ require_relative 'player'
 
 class HumanPlayer < Player
 
-attr_reader :board, :mark_value, :game
+attr_reader :board, :mark_value
 attr_accessor :turn
 
   def initialize(board, mark_value=1)
     @board=board
     @mark_value=mark_value
-    @game = game
     @turn=0
   end
 
@@ -16,11 +15,12 @@ attr_accessor :turn
     if board.row_size == 3
       coordinates=get_better_input_for_3_way_board 
     else
-      coordinates=get_input if board.row_size != 3
+      coordinates=get_input
     end
-
     board.mark_square(coordinates[0], coordinates[1], mark_value)
   end
+
+private
 
   def get_input
       coordinates=[]
@@ -42,8 +42,9 @@ attr_accessor :turn
   def get_better_input_for_3_way_board
     coordinates=[]
     puts "\nWhat space do you want to mark"
-    input = gets.chomp.to_i
-    # run_exit_check(input)
+    input = gets.chomp
+    run_exit_check(input)
+    input=input.to_i
     case input
       when 1
         coordinates = [0,0]
@@ -65,6 +66,10 @@ attr_accessor :turn
         coordinates = [2,2]
     end
     return coordinates
+  end
+
+  def run_exit_check(input)
+    exit if ["exit", "quit"].include?(input.downcase)
   end
 
   
