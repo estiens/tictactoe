@@ -1,6 +1,6 @@
 class Player
 
-  def mark_space(coordinates)
+  def mark_space(coordinates, mark_value)
     @board.mark_square(coordinates[0], coordinates[1], mark_value )
   end
 

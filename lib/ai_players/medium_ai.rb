@@ -12,14 +12,14 @@ class MediumAi < AiPlayer
   end
 
   def play_turn
-    if @turn == 0 
+    if check_for_winner(@mark_value)
+      mark_space(check_for_winner(@mark_value))
+    elsif check_for_winner(@opposing_mark_value)
+      mark_space(check_for_winner(@opposing_mark_value))
+    elsif @turn == 0 
       play_first_turn
-    elsif check_for_self_winner
-      mark_space(check_for_self_winner)
-    elsif check_for_opponent_winner
-      mark_space(check_for_opponent_winner)
     else
-    play_random_move
+      play_random_move
     end
   end
 

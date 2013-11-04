@@ -13,30 +13,28 @@ attr_accessor :turn, :coordinates
     @turn=0
   end
 
-  def random_value
-    [rand(@board.row_size), rand(@board.row_size)]
-  end
-
   def play_turn
-    if check_for_self_winner
-      mark_space(check_for_self_winner)
-    elsif check_for_opponent_winner
-      mark_space(check_for_opponent_winner)
+    if check_for_winner(@mark_value)
+      mark_space(check_for_winner(@mark_value))
+    elsif check_for_winner(@opposing_mark_value)
+      mark_space(check_for_winner(@opposing_mark_value))
+    elsif check_for_two_way_fork
+      mark_space(check_for_two_way_fork)
     elsif @turn == 0 
       play_first_turn
-    elsif hard_code_for_isolated_cases
-      mark_space(hard_code_for_isolated_cases)
-    elsif check_for_opponent_fork
-      mark_space(check_for_opponent_fork)
-    elsif check_for_self_fork
-      puts "There was a fork possible"
-      mark_space(check_for_self_fork)
+    elsif check_for_fork(@mark_value)
+      mark_space(check_for_fork(@mark_value))
+    elsif check_for_fork(@opposing_mark_value)
+      mark_space(check_for_fork(@opposing_mark_value))
+    elsif check_inputs(get_middle) 
+      mark_space(get_middle)
     else
       play_random_move
     end
   end
 
-      
+  private
+
   def play_first_turn
     if check_inputs(get_middle)
       mark_space(get_middle)
@@ -54,9 +52,8 @@ attr_accessor :turn, :coordinates
     end
   end
 
-
   def play_random_move
-    @coordinates=take_random
+    @coordinates=random_value
     if check_inputs(@coordinates)
       mark_space(@coordinates)
     else
@@ -64,113 +61,47 @@ attr_accessor :turn, :coordinates
     end
   end
 
-  def check_for_self_winner
+  def check_for_winner(mark_value)
     winner=[]
     @board.all_valid_moves.each do |valid_move|
-      previous_value = @board.find_mark_of_square(valid_move[0],valid_move[1])
-      @board.mark_square(valid_move[0],valid_move[1],@mark_value)
+      @board.mark_square(valid_move[0],valid_move[1],mark_value)
       winner << valid_move if @board.winner?
-      @board.mark_square(valid_move[0],valid_move[1],previous_value)
+      @board.mark_square(valid_move[0],valid_move[1],0)
       break if !winner.empty?
     end
     return winner[0] if !winner.empty?
     return false if winner.empty?
   end
 
-  def check_for_self_fork
-    forkable_space=[]
-    winner=[]
-    @board.all_valid_moves.each do |valid_move|
-      previous_value = @board.find_mark_of_square(valid_move[0],valid_move[1])
-      @board.mark_square(valid_move[0],valid_move[1],mark_value)
-      forkable_space=[valid_move[0],valid_move[1]]
-      @board.all_valid_moves.each do |second_move|
-        previous_value = @board.find_mark_of_square(second_move[0],second_move[1])
-        @board.mark_square(second_move[0],second_move[1],mark_value)
-        winner << second_move if @board.winner?
-        @board.mark_square(second_move[0],second_move[1],previous_value)
-        end
-      @board.mark_square(valid_move[0],valid_move[1],previous_value)
-    end
-    return forkable_space if winner.length > 1
-    return false if winner.length <= 1
-  end
-
-  def check_for_opponent_fork2
-    forkable_space=[]
-    winner=[]
-    @board.all_valid_moves.each do |valid_move|
-      winner=[]
-      previous_value = @board.find_mark_of_square(valid_move[0],valid_move[1])
-      @board.mark_square(valid_move[0],valid_move[1],@opposing_mark_value)
-      forkable_space=[valid_move[0],valid_move[1]]
-      @board.all_valid_moves.each do |second_move|
-        previous_value = @board.find_mark_of_square(second_move[0],second_move[1])
-        @board.mark_square(second_move[0],second_move[1],@opposing_mark_value)
-        winner << second_move if @board.winner?
-        @board.mark_square(second_move[0],second_move[1],previous_value)
-        end
-      @board.mark_square(valid_move[0],valid_move[1],previous_value)
-    end
-    return forkable_space if winner.length > 1
-    return false if winner.length <= 1
-  end
-
-    def check_for_opponent_fork
-    winner=[]
-    forkable_space=[]
-    @board.all_valid_moves.each do |valid_move|
-      winner=[]
-      previous_value = @board.find_mark_of_square(valid_move[0],valid_move[1])
-      @board.mark_square(valid_move[0],valid_move[1],@opposing_mark_value)
-      forkable_space=[valid_move[0],valid_move[1]]
-      @board.all_valid_moves.each do |opponent_move|
-        previous_opponent_value = @board.find_mark_of_square(opponent_move[0],opponent_move[1])
-        @board.mark_square(opponent_move[0],opponent_move[1],@opposing_mark_value)
-        @board.all_valid_moves.each do |second_move|
-          previous_second_value = @board.find_mark_of_square(second_move[0],second_move[1])
-          @board.mark_square(second_move[0],second_move[1],@opposing_mark_value)
-          winner << second_move if @board.winner?
-          @board.mark_square(second_move[0],second_move[1],previous_second_value)
-        break if winner.length>1 
-        end
-        @board.mark_square(opponent_move[0],opponent_move[1], previous_opponent_value)
-        break if winner.length>1
-        end
-      @board.mark_square(valid_move[0],valid_move[1],previous_value)
-      break if winner.length>1
-    end
-    return forkable_space if winner.length > 1
-    return false if winner.length <= 1
-  end
-
-  def hard_code_for_isolated_cases
-    # these are here because they were the only two forking conditions not being caught by the method. Method should be fixed 
-    # and ideally all ported to minimax algorithm
-
-    if (@board.find_mark_of_square(0,0) == @opposing_mark_value) && (@board.find_mark_of_square(2,1) == @opposing_mark_value)
-      return [2,0] if check_inputs([2,0])
-    elsif (@board.find_mark_of_square(0,2) == @opposing_mark_value) && (@board.find_mark_of_square(2,1) == @opposing_mark_value)
-      return [2,2] if check_inputs([2,2])
+  def check_for_two_way_fork
+    if (@board.find_mark_of_square(0,0) == @opposing_mark_value) && (@board.find_mark_of_square(2,2) == @opposing_mark_value) && (@board.find_mark_of_square(1,1) == @mark_value)
+      return [0,1]
+    elsif (@board.find_mark_of_square(0,2) == @opposing_mark_value) && (@board.find_mark_of_square(2,0) == @opposing_mark_value) && (@board.find_mark_of_square(1,1) == @mark_value)
+      return [2,1]
     else
       return false
     end
   end
 
-  def check_for_opponent_winner
-    #if any move results in opponent win, block it
-    blocker=[]
+  def check_for_fork(mark_value)
+    forkable_space=[]
+    winner=[]
     @board.all_valid_moves.each do |valid_move|
-      previous_value = @board.find_mark_of_square(valid_move[0],valid_move[1])
-      @board.mark_square(valid_move[0],valid_move[1],@opposing_mark_value)
-      blocker << valid_move if @board.winner?
-      @board.mark_square(valid_move[0],valid_move[1],previous_value)
-      break if !blocker.empty?
+      winner.clear
+      @board.mark_square(valid_move[0],valid_move[1],mark_value)
+      forkable_space=[valid_move[0],valid_move[1]]
+      @board.all_valid_moves.each do |second_move|
+        @board.mark_square(second_move[0],second_move[1],mark_value)
+        winner << second_move if @board.winner?
+        @board.mark_square(second_move[0],second_move[1],0)
+        break if winner.length > 1
+      end
+      @board.mark_square(valid_move[0],valid_move[1],0)
+      break if winner.length>1
     end
-    return blocker[0] if !blocker.empty?
-    return false if blocker.empty?
+    return forkable_space if winner.length > 1
+    return false if winner.length <= 1
   end
-
 
   def get_corner
     corners=[[0,0],[0,@board.row_size-1],[@board.row_size-1, 0], [@board.row_size-1,@board.row_size-1]]
@@ -181,15 +112,12 @@ attr_accessor :turn, :coordinates
     [(@board.row_size/2), (@board.row_size/2)]
   end
 
-  def take_random
-    random_value
+  def random_value
+    [rand(@board.row_size), rand(@board.row_size)]
   end
 
-  def mark_space(coordinates,mark_value=@mark_value)
+  def mark_space(coordinates)
     @board.mark_square(coordinates[0],coordinates[1],@mark_value)
-  end
-
-  def analyze(board)
   end
 
 end
