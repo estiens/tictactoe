@@ -18,12 +18,12 @@ attr_accessor :turn, :coordinates
   end
 
   def play_turn
-    if @turn == 0 
-      play_first_turn
-    elsif check_for_self_winner
+    if check_for_self_winner
       mark_space(check_for_self_winner)
     elsif check_for_opponent_winner
       mark_space(check_for_opponent_winner)
+    elsif @turn == 0 
+      play_first_turn
     elsif hard_code_for_isolated_cases
       mark_space(hard_code_for_isolated_cases)
     elsif check_for_opponent_fork

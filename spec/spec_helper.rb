@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require './lib/game_runner'
 
 RSpec.configure do |config|
