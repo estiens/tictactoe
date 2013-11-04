@@ -5,7 +5,7 @@ describe "Player" do
   let (:player) {HumanPlayer.new(board,1)}
 
   it "should be able to mark a square" do
-    player.mark_space([0,0])
+    player.mark_space([0,0],1)
     expect(board.find_mark_of_square(0,0)).to eq(1)
   end
 
@@ -15,7 +15,7 @@ describe "Player" do
   end
 
   it "should be able to check if a space has been played" do
-    player.mark_space([1,1])
+    player.mark_space([1,1],1)
     expect(player.check_input_for_mark([1,1])).to eq false
   end
 
