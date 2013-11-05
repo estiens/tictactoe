@@ -1,10 +1,10 @@
 require_relative 'spec_helper'
 
 describe Board do
-  
+
  let(:board) {Board.new}
  let(:board4) {Board.new(4)}
-  
+
   it "creates a board" do
     expect(board).to_not be_nil
   end
@@ -24,7 +24,7 @@ describe Board do
   it "initializes all cells to 0" do
     expect(board.board.flatten.uniq).to eq([0])
   end
-  
+
   it "retrieves the value of a cell" do
     expect(board.find_mark_of_square(0,0)).to eq(0)
   end
@@ -44,51 +44,51 @@ describe Board do
   end
 
   describe "it returns false if there is no winner" do
-    it "returns false if there is no winner" do 
+    it "returns false if there is no winner" do
       expect(board.winner?).to eq(false)
     end
   end
 
   describe "it checks for a horizontal winner" do
-    
+
     it "returns true if the top row is filled" do
       board.board=[[1,1,1],[0,0,0],[0,0,0]]
       expect(board.winner?).to eq(true)
     end
-    
+
     it "returns true if the middle row is filled" do
       board.board=[[0,0,0], [-1,-1,-1], [0,0,0]]
       expect(board.winner?).to eq(true)
     end
 
     it "returns true if the bottom row is filled" do
-      board.board=[[0,0,0], [0,0,0], [1,1,1]] 
+      board.board=[[0,0,0], [0,0,0], [1,1,1]]
       expect(board.winner?).to eq(true)
     end
 
   end
 
-  describe "it checks for a vertical winner" do 
+  describe "it checks for a vertical winner" do
 
     it "returns true if left column is filled" do
-      board.board=[[-1,0,0], [-1,0,0], [-1,0,0]] 
+      board.board=[[-1,0,0], [-1,0,0], [-1,0,0]]
       expect(board.winner?).to eq(true)
     end
 
     it "returns true if the middle column is filled" do
-      board.board=[[0,1,0], [0,1,0], [0,1,0]] 
+      board.board=[[0,1,0], [0,1,0], [0,1,0]]
       expect(board.winner?).to eq(true)
     end
 
     it "returns true if the right column is filled" do
-      board.board=[[0,0,-1], [0,0,-1], [0,0,-1]] 
+      board.board=[[0,0,-1], [0,0,-1], [0,0,-1]]
       expect(board.winner?).to eq(true)
     end
 
   end
 
   describe "it checks for a diagonal winner" do
-    
+
     it "returns true if the upper left-lower right diagonal is filled" do
       board.board=[[1,0,0],[0,1,0],[0,0,1]]
       expect(board.winner?).to eq true
@@ -98,7 +98,7 @@ describe Board do
       board.board=[[0,0,-1],[0,-1,0],[-1,0,0]]
       expect(board.winner?).to eq true
     end
-  
+
   end
 
   describe "it passes cursory checks for a 4x4 board" do

@@ -82,7 +82,7 @@ describe "Hard Ai" do
   end
 
   describe "MediumAi" do
-     
+
   it "should be able to make a valid move" do
   mediumplayer.play_turn
   expect(board.board.flatten).to include(1)
