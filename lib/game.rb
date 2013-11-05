@@ -32,12 +32,13 @@ class Game
     elsif @board.tie? && @player1.class == AiPlayer && @player2.class == AiPlayer
       puts "A strange game. The only winning move is not to play.\nHow about a nice game of chess?"
     else 
-      puts "Cats game? Would you like to play again [Y] or [N]"
-      ask_to_play
+      puts "Cats game!"
     end
+    ask_to_play
   end
 
   def ask_to_play
+    puts "Would you like to play again [Y] or [N]?"
     play_again=gets.chomp.downcase
     if play_again == "y"
       @board.clear_squares

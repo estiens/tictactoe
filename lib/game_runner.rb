@@ -4,6 +4,7 @@ require_relative "./ai_players/ai_player"
 require_relative "./ai_players/medium_ai"
 require_relative "./ai_players/dumb_ai"
 
+require 'debugger'
 
 class Runner
   attr_reader :game
@@ -17,6 +18,25 @@ class Runner
     @game.play_game
   end
 
+  def simulate_games(player1,player2,simulation_times=1000)
+    game_results=Hash.new(0)
+
+    simulation_times.times do 
+      game=Game.new
+      game.player1=send(player1)
+      game.player2=send(player2)    
+      game.current_player=game.player1
+      game.play_game
+      if game.board.tie?
+        game_results["tie"]+=1
+      elsif game.board.winner?
+        game_results["#{player1.class} - X"]+=1 if game.current_player == game.player1
+        game_results["#{player2.class} - O"]+=1 if game.current_player == game.player2
+      end
+    puts game_results
+    end
+  end
+  
   private
 
   def choose_first_player
@@ -55,5 +75,11 @@ class Runner
     end
   end
 
-
 end
+
+runner=Runner.new
+runner.simulate_games("AiPlayer.new", "MediumAi.new")
+
+
+
+

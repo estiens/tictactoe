@@ -18,8 +18,8 @@ attr_accessor :turn, :coordinates
       mark_space(check_for_winner(@mark_value))
     elsif check_for_winner(@opposing_mark_value)
       mark_space(check_for_winner(@opposing_mark_value))
-    elsif check_for_two_way_fork
-      mark_space(check_for_two_way_fork)
+    elsif check_for_two_way_fork && check_inputs(check_for_two_way_fork)
+      mark_space(check_for_two_way_fork) 
     elsif @turn == 0 
       play_first_turn
     elsif check_for_fork(@mark_value)
@@ -78,6 +78,8 @@ attr_accessor :turn, :coordinates
       return [0,1]
     elsif (@board.find_mark_of_square(0,2) == @opposing_mark_value) && (@board.find_mark_of_square(2,0) == @opposing_mark_value) && (@board.find_mark_of_square(1,1) == @mark_value)
       return [2,1]
+    elsif (@board.find_mark_of_square(0,0) == @opposing_mark_value) && (@board.find_mark_of_square(1,1) == @opposing_mark_value) && (@board.find_mark_of_square(2,2) == @mark_value)
+      return [0,2]
     else
       return false
     end

@@ -1,7 +1,8 @@
-require 'debugger'
+
 
 class Board
   require 'colorize'
+  
   attr_reader :row_size, :game
   attr_accessor :board  #needed for quicker testing but we never assign board values this way
 

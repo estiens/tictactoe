@@ -10,13 +10,13 @@ describe "Player" do
   end
 
   it "should be able to check if a move is out of bounds" do
-    expect(player.run_range_checks([-1,1])).to eq false
-    expect(player.run_range_checks([3,3])).to eq false
+    expect(player.check_inputs([-1,1])).to eq false
+    expect(player.check_inputs([3,3])).to eq false
   end
 
   it "should be able to check if a space has been played" do
     player.mark_space([1,1],1)
-    expect(player.check_input_for_mark([1,1])).to eq false
+    expect(player.check_inputs([1,1])).to eq false
   end
 
 end
