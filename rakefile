@@ -1,6 +1,10 @@
 require_relative "lib/game_runner"
 
-task :run do
-    runner=Runner.new
-    runner.run_game
+task :default => ["play_game"]
+
+task :play_game do
+    ruby "bin/tic_tac_toe.rb"
 end
+
+
+
