@@ -40,30 +40,33 @@ private
   end
 
   def get_better_input_for_3_way_board
-    coordinates=[]
+    coordinates=[-1,-1]
     puts "\nWhat space do you want to mark"
     input = gets.chomp
     run_exit_check(input)
-    input=input.to_i
     case input
-      when 1
+      when "1"
         coordinates = [0,0]
-      when 2
+      when "2"
         coordinates = [0,1]
-      when 3
+      when "3"
         coordinates = [0,2]
-      when 4
+      when "4"
         coordinates = [1,0]
-      when 5
+      when "5"
         coordinates = [1,1]
-      when 6
+      when "6"
         coordinates = [1,2]
-      when 7
+      when "7"
         coordinates = [2,0]
-      when 8
+      when "8"
         coordinates = [2,1]
-      when 9
+      when "9"
         coordinates = [2,2]
+    end
+    unless check_inputs(coordinates)
+      puts "Sorry that doesn't appear to be a valid move."
+      get_better_input_for_3_way_board
     end
     return coordinates
   end
