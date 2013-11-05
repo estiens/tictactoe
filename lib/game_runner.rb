@@ -4,8 +4,6 @@ require_relative "./ai_players/ai_player"
 require_relative "./ai_players/medium_ai"
 require_relative "./ai_players/dumb_ai"
 
-require 'debugger'
-
 class Runner
   attr_reader :game
 
@@ -18,23 +16,24 @@ class Runner
     @game.play_game
   end
 
-  def simulate_games(player1,player2,simulation_times=1000)
+  def simulate_games(simulation_times=5000) #comment out #ask_to_play in game.print_winner_message if you want to simulate games
     game_results=Hash.new(0)
 
     simulation_times.times do 
       game=Game.new
-      game.player1=send(player1)
-      game.player2=send(player2)    
+      game.player1=DumbAi.new(game.board,1)
+      game.player2=AiPlayer.new(game.board,-1)  
       game.current_player=game.player1
       game.play_game
       if game.board.tie?
         game_results["tie"]+=1
       elsif game.board.winner?
-        game_results["#{player1.class} - X"]+=1 if game.current_player == game.player1
-        game_results["#{player2.class} - O"]+=1 if game.current_player == game.player2
+        game_results["#{game.player1.class} - X"]+=1 if game.current_player == game.player2
+        game_results["#{game.player2.class} - 0"]+=1 if game.current_player == game.player1
       end
-    puts game_results
     end
+    
+    puts game_results
   end
   
   private
@@ -62,7 +61,7 @@ class Runner
   end
 
   def choose_difficulty
-    puts "Would you like to play against a [E]asy Opponent, a [M]edium Opponent, or a [H]ard Opponent"
+    puts "Would you like to play against an\n[E]asy Opponent\na [M]edium Opponent\nor a [H]ard Opponent"
     difficulty_choice=gets.chomp.downcase
     if difficulty_choice == "e"
       @game.player2=DumbAi.new(@game.board)

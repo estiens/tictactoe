@@ -24,6 +24,8 @@ class Game
     @current_player == @player1 ? @current_player = @player2 : @current_player = @player1
   end
 
+  private
+  
   def print_winner_message
     puts "\n\n"
     if @board.winner?

@@ -21,7 +21,7 @@ class Board
 
   def empty?(row,column)
     return true if find_mark_of_square(row,column) == 0
-    false
+    return false
   end
   
   def clear_squares
@@ -34,12 +34,12 @@ class Board
 
   def winner?
     return true if horizontal_line? || vertical_line? || left_diagonal_line? || right_diagonal_line?
-    false
+    return false
   end
 
   def tie?
     return true if !@board.flatten.include?(0) && !self.winner?
-    false
+    return false
   end
 
   def all_valid_moves 
@@ -85,7 +85,7 @@ private
       sum += row[index]
     end
     return true if sum == @row_size || sum == -@row_size
-    false
+    return false
   end
 
   def right_diagonal_line?
@@ -94,7 +94,7 @@ private
       sum += row[(row.length-1)-index]
     end
     return true if sum == @row_size || sum == -@row_size
-    false
+    return false
   end
 
   def check_row(row)
