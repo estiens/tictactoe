@@ -1,4 +1,5 @@
 require_relative 'player'
+require 'debugger'
 
 class HumanPlayer < Player
 
@@ -12,12 +13,13 @@ attr_accessor :turn
   end
 
   def play_turn
-    if board.row_size == 3
-      coordinates=get_better_input_for_3_way_board
+    coordinates=get_better_input_for_3_way_board if board.row_size == 3
+    coordinates=get_input unless board.row_size == 3
+    if check_inputs(coordinates)
+      board.mark_square(coordinates[0], coordinates[1], mark_value)
     else
-      coordinates=get_input
+      play_turn
     end
-    board.mark_square(coordinates[0], coordinates[1], mark_value)
   end
 
 private
@@ -40,7 +42,8 @@ private
   end
 
   def get_better_input_for_3_way_board
-    coordinates=[-1,-1]
+    coordinates = [-1,-1]
+    while coordinates == [-1,-1]
     puts "\nWhat space do you want to mark"
     input = gets.chomp
     run_exit_check(input)
@@ -64,9 +67,6 @@ private
       when "9"
         coordinates = [2,2]
     end
-    unless check_inputs(coordinates)
-      puts "Sorry that doesn't appear to be a valid move."
-      get_better_input_for_3_way_board
     end
     return coordinates
   end
