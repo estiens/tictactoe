@@ -18,14 +18,14 @@ class Game
     board.to_s
     print_winner_message
   end
-  
+
   def switch_player
     @current_player.turn += 1
     @current_player == @player1 ? @current_player = @player2 : @current_player = @player1
   end
 
   private
-  
+
   def print_winner_message
     puts "\n\n"
     if @board.winner?
@@ -33,7 +33,7 @@ class Game
       puts "Sorry Dave, I can't let you win" if @current_player == @player1
     elsif @board.tie? && @player1.class == AiPlayer && @player2.class == AiPlayer
       puts "A strange game. The only winning move is not to play.\nHow about a nice game of chess?"
-    else 
+    else
       puts "Cats game!"
     end
     ask_to_play

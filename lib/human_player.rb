@@ -13,7 +13,7 @@ attr_accessor :turn
 
   def play_turn
     if board.row_size == 3
-      coordinates=get_better_input_for_3_way_board 
+      coordinates=get_better_input_for_3_way_board
     else
       coordinates=get_input
     end
@@ -31,7 +31,7 @@ private
       column = gets.chomp
       coordinates[0] = row.to_i
       coordinates[1] = column.to_i
-      if !check_inputs(coordinates) 
+      if !check_inputs(coordinates)
         puts "Sorry, that's not a valid move".red
         get_input
       else
@@ -54,11 +54,11 @@ private
         coordinates = [0,2]
       when 4
         coordinates = [1,0]
-      when 5 
+      when 5
         coordinates = [1,1]
       when 6
         coordinates = [1,2]
-      when 7 
+      when 7
         coordinates = [2,0]
       when 8
         coordinates = [2,1]
@@ -72,7 +72,7 @@ private
     exit if ["exit", "quit"].include?(input.downcase)
   end
 
-  
+
 
 end
 

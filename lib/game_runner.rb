@@ -19,10 +19,10 @@ class Runner
   def simulate_games(simulation_times=5000) #comment out #ask_to_play in game.print_winner_message if you want to simulate games
     game_results=Hash.new(0)
 
-    simulation_times.times do 
+    simulation_times.times do
       game=Game.new
       game.player1=DumbAi.new(game.board,1)
-      game.player2=AiPlayer.new(game.board,-1)  
+      game.player2=AiPlayer.new(game.board,-1)
       game.current_player=game.player1
       game.play_game
       if game.board.tie?
@@ -32,10 +32,10 @@ class Runner
         game_results["#{game.player2.class} - 0"]+=1 if game.current_player == game.player1
       end
     end
-    
+
     puts game_results
   end
-  
+
   private
 
   def choose_first_player
@@ -48,13 +48,13 @@ class Runner
     elsif player_choice == "c"
       @game.player1=HumanPlayer.new(@game.board)
       choose_difficulty
-      @game.current_player=@game.player2 
+      @game.current_player=@game.player2
     elsif player_choice == "w"
       @game.player1 = AiPlayer.new(@game.board,1)
       @game.player2 = AiPlayer.new(@game.board,-1)
       @game.delay=0.5
       @game.current_player=@game.player1
-    else 
+    else
       puts "Sorry I need a [C] or [H] or [W]"
       choose_first_player
     end

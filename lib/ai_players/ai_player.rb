@@ -19,14 +19,14 @@ attr_accessor :turn, :coordinates
     elsif check_for_winner(@opposing_mark_value)
       mark_space(check_for_winner(@opposing_mark_value))
     elsif check_for_two_way_fork && check_inputs(check_for_two_way_fork)
-      mark_space(check_for_two_way_fork) 
-    elsif @turn == 0 
+      mark_space(check_for_two_way_fork)
+    elsif @turn == 0
       play_first_turn
     elsif check_for_fork(@opposing_mark_value)
       mark_space(check_for_fork(@opposing_mark_value))
     elsif check_for_fork(@mark_value)
       mark_space(check_for_fork(@mark_value))
-    elsif check_inputs(get_middle) 
+    elsif check_inputs(get_middle)
       mark_space(get_middle)
     else
       play_random_move

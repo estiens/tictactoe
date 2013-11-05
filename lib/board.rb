@@ -2,7 +2,7 @@
 
 class Board
   require 'colorize'
-  
+
   attr_reader :row_size, :game
   attr_accessor :board  #needed for quicker testing but we never assign board values this way
 
@@ -14,7 +14,7 @@ class Board
   def mark_square( row, column, player_marker )
     @board[row][column] = player_marker
   end
-  
+
   def find_mark_of_square( row, column )
     @board[row][column]
   end
@@ -23,14 +23,14 @@ class Board
     return true if find_mark_of_square(row,column) == 0
     return false
   end
-  
+
   def clear_squares
     (0...@row_size).each do |row|
       (0...@row_size).each do |column|
         mark_square(row,column,0)
       end
     end
-  end 
+  end
 
   def winner?
     return true if horizontal_line? || vertical_line? || left_diagonal_line? || right_diagonal_line?
@@ -42,7 +42,7 @@ class Board
     return false
   end
 
-  def all_valid_moves 
+  def all_valid_moves
     valid_moves=[]
     @board.each_with_index do |row, rowindex|
       row.each_with_index do |space, columnindex|
@@ -68,7 +68,7 @@ class Board
       end
   end
 
-private 
+private
 
   def horizontal_line?
     @board.any? {|row| check_row(row)}
@@ -105,5 +105,5 @@ private
     end
   end
 
-  
+
 end
