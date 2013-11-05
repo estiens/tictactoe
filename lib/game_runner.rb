@@ -61,7 +61,7 @@ class Runner
   end
 
   def choose_difficulty
-    puts "Would you like to play against an\n[E]asy Opponent\na [M]edium Opponent\nor a [H]ard Opponent"
+    puts "Would you like to play against an\n[E]asy Opponent, a [M]edium Opponent, or a [H]ard Opponent"
     difficulty_choice=gets.chomp.downcase
     if difficulty_choice == "e"
       @game.player2=DumbAi.new(@game.board)
