@@ -77,8 +77,6 @@ class Runner
 
 end
 
-runner=Runner.new
-runner.simulate_games("AiPlayer.new", "MediumAi.new")
 
 
 
