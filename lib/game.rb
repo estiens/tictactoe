@@ -11,11 +11,11 @@ class Game
   def play_game
     until @board.winner? || @board.tie?
     sleep(delay)
-    board.to_s
+    board.print_board
     @current_player.play_turn
     switch_player
     end
-    board.to_s
+    board.print_board
     print_winner_message
   end
 
@@ -37,7 +37,7 @@ class Game
     else
       puts "Cats game!"
     end
-    ask_to_play
+    # ask_to_play
   end
 
   def ask_to_play
