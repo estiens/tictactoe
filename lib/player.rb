@@ -11,8 +11,7 @@ class Player
   private
 
   def check_input_for_mark(coordinates)
-    return true if board.find_mark_of_square(coordinates[0],coordinates[1]) == 0
-    return false
+    board.find_mark_of_square(coordinates[0],coordinates[1]) == 0
   end
 
   def run_range_checks(coordinates)
@@ -20,8 +19,7 @@ class Player
   end
 
   def check_input_for_range(coordinate)
-    return true if coordinate > -1 && coordinate < board.row_size
-    return false
+    coordinate > -1 && coordinate < board.row_size
   end
 
 end
