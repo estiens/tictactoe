@@ -41,7 +41,7 @@ class Game
     else
       puts "Cats game!"
     end
-    # ask_to_play
+    ask_to_play
   end
 
   def ask_to_play

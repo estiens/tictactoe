@@ -1,6 +1,5 @@
-
-
 class Board
+
   require 'colorize'
 
   attr_reader :row_size
@@ -89,7 +88,7 @@ private
   end
 
   def right_diagonal_line?
-    sum=0
+    sum = 0
     @board.each_with_index do |row,index|
       sum += row[(row.length-1)-index]
     end
@@ -99,6 +98,5 @@ private
   def check_row_for_winner(row)
     row.inject(:+) == row.size || row.inject(:+) == -row.size
   end
-
 
 end
