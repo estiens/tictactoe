@@ -79,7 +79,7 @@ private
     turned_board.any? {|row| check_row_for_winner(row)}
   end
 
-  def left_diagonal_line? #can we refactor this to not use sum and use inject?
+  def left_diagonal_line?
     sum = 0
     @board.each_with_index do |row,index|
       sum += row[index]

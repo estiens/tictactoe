@@ -19,16 +19,16 @@ class Runner
   def simulate_games(simulation_times=1000) #comment out #ask_to_play in game.print_winner_message if you want to simulate games
     game_results=Hash.new(0)
     simulation_times.times do
-      game=Game.new
-      game.player1=AiPlayer.new(game.board,1)
-      game.player2=AiPlayer.new(game.board,-1)
-      game.current_player=game.player1
+      game = Game.new
+      game.player1 = AiPlayer.new(game.board,1)
+      game.player2 = AiPlayer.new(game.board,-1)
+      game.current_player = game.player1
       game.play_game
       if game.board.tie?
-        game_results["tie"]+=1
+        game_results["tie"] += 1
       elsif game.board.winner?
-        game_results["#{game.player1.class} - X"]+=1 if game.current_player == game.player2
-        game_results["#{game.player2.class} - 0"]+=1 if game.current_player == game.player1
+        game_results["#{game.player1.class} - X"] += 1 if game.current_player == game.player2
+        game_results["#{game.player2.class} - 0"] += 1 if game.current_player == game.player1
       end
     end
     puts game_results
@@ -41,11 +41,11 @@ class Runner
     player_choice=gets.chomp.downcase
     case player_choice
       when "h"
-        @game.player1=HumanPlayer.new(@game.board)
-        @game.current_player=@game.player1
+        @game.player1 = HumanPlayer.new(@game.board)
+        @game.current_player = @game.player1
         choose_difficulty
       when "c"
-        @game.player1=HumanPlayer.new(@game.board)
+        @game.player1 = HumanPlayer.new(@game.board)
         choose_difficulty
         @game.current_player=@game.player2
       when "w"
@@ -64,11 +64,11 @@ class Runner
     difficulty_choice=gets.chomp.downcase
     case difficulty_choice
       when "e"
-        @game.player2=DumbAi.new(@game.board)
+        @game.player2 = DumbAi.new(@game.board)
       when "m"
-        @game.player2=MediumAi.new(@game.board)
+        @game.player2 = MediumAi.new(@game.board)
       when "h"
-        @game.player2=AiPlayer.new(@game.board)
+        @game.player2 = AiPlayer.new(@game.board)
       else
         puts "Sorry, I need an [E], [M], or [H]"
         choose_difficulty
