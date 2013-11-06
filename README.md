@@ -5,7 +5,7 @@ Tic-Tac-Toe console game with an unbeatable AI
 
 *TO PLAY*
 
-`gem install colorize`
+`bundle install`
 
 `rake` or `rake play_game`
 
