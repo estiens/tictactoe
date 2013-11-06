@@ -13,7 +13,6 @@ attr_accessor :turn
 
   def play_turn
     coordinates = @board.row_size == 3 ? get_better_input_for_3_way_board : get_input
-    coordinates=get_input unless board.row_size == 3
     if check_inputs(coordinates)
       board.mark_square(coordinates[0], coordinates[1], mark_value)
     else
