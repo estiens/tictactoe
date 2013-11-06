@@ -1,5 +1,4 @@
 require_relative 'player'
-require 'debugger'
 
 class HumanPlayer < Player
 
@@ -13,7 +12,7 @@ attr_accessor :turn
   end
 
   def play_turn
-    coordinates=get_better_input_for_3_way_board if board.row_size == 3
+    coordinates = @board.row_size == 3 ? get_better_input_for_3_way_board : get_input
     coordinates=get_input unless board.row_size == 3
     if check_inputs(coordinates)
       board.mark_square(coordinates[0], coordinates[1], mark_value)
@@ -31,42 +30,39 @@ private
       run_exit_check(row)
       puts "What column do you want to mark?"
       column = gets.chomp
-      coordinates[0] = row.to_i
-      coordinates[1] = column.to_i
-      if !check_inputs(coordinates)
+      coordinates = [row.to_i, column.to_i]
+      unless check_inputs(coordinates)
         puts "Sorry, that's not a valid move".red
         get_input
-      else
-        return coordinates
       end
   end
 
   def get_better_input_for_3_way_board
     coordinates = [-1,-1]
     while coordinates == [-1,-1]
-    puts "\nWhat space do you want to mark"
-    input = gets.chomp
-    run_exit_check(input)
-    case input
-      when "1"
-        coordinates = [0,0]
-      when "2"
-        coordinates = [0,1]
-      when "3"
-        coordinates = [0,2]
-      when "4"
-        coordinates = [1,0]
-      when "5"
-        coordinates = [1,1]
-      when "6"
-        coordinates = [1,2]
-      when "7"
-        coordinates = [2,0]
-      when "8"
-        coordinates = [2,1]
-      when "9"
-        coordinates = [2,2]
-    end
+      puts "\nWhat space do you want to mark? (or 'exit')"
+      input = gets.chomp
+      run_exit_check(input)
+      case input
+        when "1"
+          coordinates = [0,0]
+        when "2"
+          coordinates = [0,1]
+        when "3"
+          coordinates = [0,2]
+        when "4"
+          coordinates = [1,0]
+        when "5"
+          coordinates = [1,1]
+        when "6"
+          coordinates = [1,2]
+        when "7"
+          coordinates = [2,0]
+        when "8"
+          coordinates = [2,1]
+        when "9"
+          coordinates = [2,2]
+      end
     end
     return coordinates
   end
@@ -74,8 +70,6 @@ private
   def run_exit_check(input)
     exit if ["exit", "quit"].include?(input.downcase)
   end
-
-
 
 end
 

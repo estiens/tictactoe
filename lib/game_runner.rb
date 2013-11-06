@@ -76,8 +76,8 @@ class Runner
 
 end
 
-runner=Runner.new
-runner.simulate_games
+# runner=Runner.new
+# runner.simulate_games
 
 
 

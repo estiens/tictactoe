@@ -13,21 +13,25 @@ class Game
     sleep(delay)
     board.print_board
     @current_player.play_turn
+    advance_turn
     switch_player
     end
     board.print_board
     print_winner_message
   end
 
-  def switch_player
+  def advance_turn
     @current_player.turn += 1
+  end
+
+  def switch_player
     @current_player == @player1 ? @current_player = @player2 : @current_player = @player1
   end
 
   private
 
   def print_winner_message
-    puts "\n\n"
+    puts "\n"
     if @board.winner?
       puts "Player 1 Wins!" if @current_player == @player2
       puts "Player 2 Wins!" if @current_player == @player1
@@ -43,13 +47,14 @@ class Game
   def ask_to_play
     puts "Would you like to play again [Y] or [N]?"
     play_again=gets.chomp.downcase
-    if play_again == "y"
-      @board.clear_squares
-      play_game
-    elsif play_again == "n"
-      exit
-    else
-      ask_to_play
+    case play_again
+      when "y"
+        @board.clear_squares
+        play_game
+      when "n"
+        exit
+      else
+        ask_to_play
     end
   end
 
