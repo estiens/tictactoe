@@ -1,6 +1,6 @@
 require_relative 'ai_player'
 
-class DumbAi < AiPlayer
+class DumbAi < HardAi
 
   def play_turn
     play_random_move

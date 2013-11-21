@@ -2,7 +2,7 @@ require_relative "spec_helper"
 
 describe "Hard Ai" do
   let (:board) {Board.new}
-  let (:hardplayer) {AiPlayer.new(board,1)}
+  let (:hardplayer) {HardAi.new(board,1)}
   let (:mediumplayer) {MediumAi.new(board,1)}
   let (:dumbplayer) {DumbAi.new(board,1)}
 

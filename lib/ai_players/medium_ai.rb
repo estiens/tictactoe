@@ -1,4 +1,4 @@
-class MediumAi < AiPlayer
+class MediumAi < HardAi
 
   def play_turn
     if check_for_winner(@mark_value)

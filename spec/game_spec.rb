@@ -2,8 +2,8 @@ require_relative 'spec_helper'
 
 describe Game do
 let (:game) {Game.new}
-let (:player1) {AiPlayer.new(game.board)}
-let (:player2) {AiPlayer.new(game.board)}
+let (:player1) {HardAi.new(game.board)}
+let (:player2) {HardAi.new(game.board)}
 
   it "should switch players" do
     game.player1=player1

@@ -10,11 +10,11 @@ class Board
     @board = Array.new( @row_size ) { Array.new( @row_size, 0 ) }
   end
 
-  def mark_square( row, column, player_marker )
+  def mark_square(row, column, player_marker)
     @board[row][column] = player_marker
   end
 
-  def find_mark_of_square( row, column )
+  def find_mark_of_square(row, column)
     @board[row][column]
   end
 
@@ -35,7 +35,7 @@ class Board
   end
 
   def tie?
-    game_over? && (not self.winner?)
+    board_full? && (not self.winner?)
   end
 
   def all_valid_moves
@@ -66,7 +66,7 @@ class Board
 
 private
 
-  def game_over?
+  def board_full?
     not @board.flatten.include?(0)
   end
 

@@ -20,8 +20,8 @@ class Runner
     game_results=Hash.new(0)
     simulation_times.times do
       game = Game.new
-      game.player1 = AiPlayer.new(game.board,1)
-      game.player2 = AiPlayer.new(game.board,-1)
+      game.player1 = HardAi.new(game.board,1)
+      game.player2 = HardAi.new(game.board,-1)
       game.current_player = game.player1
       game.play_game
       if game.board.tie?
@@ -49,8 +49,8 @@ class Runner
         choose_difficulty
         @game.current_player=@game.player2
       when "w"
-        @game.player1 = AiPlayer.new(@game.board,1)
-        @game.player2 = AiPlayer.new(@game.board,-1)
+        @game.player1 = HardAi.new(@game.board,1)
+        @game.player2 = HardAi.new(@game.board,-1)
         @game.delay = 0.5
         @game.current_player = @game.player1
       else
@@ -68,7 +68,7 @@ class Runner
       when "m"
         @game.player2 = MediumAi.new(@game.board)
       when "h"
-        @game.player2 = AiPlayer.new(@game.board)
+        @game.player2 = HardAi.new(@game.board)
       else
         puts "Sorry, I need an [E], [M], or [H]"
         choose_difficulty

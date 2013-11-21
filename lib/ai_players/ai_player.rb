@@ -1,6 +1,6 @@
 require_relative '../player.rb'
 
-class AiPlayer < Player
+class HardAi < Player
 
 attr_reader :board, :mark_value, :opposing_mark_value
 attr_accessor :turn, :coordinates

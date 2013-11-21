@@ -35,8 +35,8 @@ class Game
     if @board.winner?
       puts "Player 1 Wins!" if @current_player == @player2
       puts "Player 2 Wins!" if @current_player == @player1
-      puts "Sorry Dave, I can't let you win" if @current_player == @player1 && @player2.class == AiPlayer
-    elsif @board.tie? && @player1.class == AiPlayer && @player2.class == AiPlayer
+      puts "Sorry Dave, I can't let you win" if @current_player == @player1 && @player2.class == HardAi
+    elsif @board.tie? && @player1.class == HardAi && @player2.class == HardAi
       puts "A strange game. The only winning move is not to play.\nHow about a nice game of chess?"
     else
       puts "Cats game!"
