@@ -1,4 +1,7 @@
 class Board
+  X = 1
+  O = -1
+  NONE = 0
 
   require 'colorize'
 
@@ -19,19 +22,23 @@ class Board
   end
 
   def empty?(row,column)
-    find_mark_of_square(row,column) == 0
+    find_mark_of_square(row,column) == NONE
+  end
+
+  def undo(row, column)
+    @board[row][column] = NONE
   end
 
   def clear_squares
     (0...@row_size).each do |row|
       (0...@row_size).each do |column|
-        mark_square(row,column,0)
+        undo(row,column)
       end
     end
   end
 
   def winner?
-    horizontal_line? || vertical_line? || left_diagonal_line? || right_diagonal_line?
+    horizontal_line? || vertical_line? || diagonal_lines?
   end
 
   def tie?
@@ -55,9 +62,9 @@ class Board
         print "\n"
         row.each do |space|
           print "|"
-          print "-#{space_counter}-".green if space == 0
-          print " X ".red if space == 1
-          print " O ".red if space == -1
+          print "-#{space_counter}-".green if space == NONE
+          print " X ".red if space == X
+          print " O ".red if space == O
           print "|  "
           space_counter += 1
         end
@@ -79,21 +86,16 @@ private
     turned_board.any? {|row| check_row_for_winner(row)}
   end
 
-  def left_diagonal_line?
-    sum = 0
+  def diagonal_lines?
+    sum_left = 0
+    sum_right = 0
     @board.each_with_index do |row,index|
-      sum += row[index]
+      sum_left += row[index]
+      sum_right += row[(row.length-1)-index]
     end
-    sum == @row_size || sum == -@row_size
+    sum_left == @row_size || sum_left == -@row_size || sum_right == @row_size || sum_right == -@row_size
   end
 
-  def right_diagonal_line?
-    sum = 0
-    @board.each_with_index do |row,index|
-      sum += row[(row.length-1)-index]
-    end
-    sum == @row_size || sum == -@row_size
-  end
 
   def check_row_for_winner(row)
     row.inject(:+) == row.size || row.inject(:+) == -row.size
