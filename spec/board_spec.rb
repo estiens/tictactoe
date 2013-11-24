@@ -1,7 +1,4 @@
 require_relative 'spec_helper'
-  X = 1
-  O = -1
-  N = 0
 
 describe Board do
 
