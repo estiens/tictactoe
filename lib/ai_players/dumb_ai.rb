@@ -1,4 +1,3 @@
-require_relative 'ai_player'
 
 class DumbAi < HardAi
 

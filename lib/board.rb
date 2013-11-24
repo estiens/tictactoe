@@ -1,16 +1,11 @@
 class Board
-  X = 1
-  O = -1
-  NONE = 0
-
-  require 'colorize'
 
   attr_reader :row_size
   attr_accessor :board  #needed for quicker testing but we never assign board values this way
 
   def initialize(row_size=3)
     @row_size = row_size
-    @board = Array.new( @row_size ) { Array.new( @row_size, 0 ) }
+    @board = Array.new(@row_size) {Array.new(@row_size, 0)}
   end
 
   def mark_square(row, column, player_marker)
@@ -21,12 +16,12 @@ class Board
     @board[row][column]
   end
 
-  def empty?(row,column)
-    find_mark_of_square(row,column) == NONE
+  def empty?(row, column)
+    find_mark_of_square(row,column) == N
   end
 
   def undo(row, column)
-    @board[row][column] = NONE
+    @board[row][column] = N
   end
 
   def clear_squares
@@ -55,20 +50,8 @@ class Board
     valid_moves
   end
 
-  def print_board
-    space_counter = 1
-    print "\n"
-      @board.each_with_index do |row,row_index|
-        print "\n"
-        row.each do |space|
-          print "|"
-          print "-#{space_counter}-".green if space == NONE
-          print " X ".red if space == X
-          print " O ".red if space == O
-          print "|  "
-          space_counter += 1
-        end
-      end
+  def player_first_turn?(mark_value)
+    not @board.flatten.include?(mark_value)
   end
 
 private

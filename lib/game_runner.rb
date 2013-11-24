@@ -1,8 +1,12 @@
 require_relative "game"
 require_relative "human_player"
-require_relative "./ai_players/ai_player"
+require_relative "./ai_players/hard_ai"
 require_relative "./ai_players/medium_ai"
 require_relative "./ai_players/dumb_ai"
+
+X = 1
+O = -1
+N = 0
 
 class Runner
   attr_reader :game
@@ -77,6 +81,8 @@ class Runner
 
 end
 
+runner=Runner.new
+runner.simulate_games
 
 
 

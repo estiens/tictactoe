@@ -1,4 +1,5 @@
 require_relative "board"
+require_relative "board_view"
 
 class Game
   attr_accessor :board, :player1, :player2, :current_player, :delay
@@ -6,17 +7,17 @@ class Game
   def initialize
     @board = Board.new
     @delay = 0
+    @view = BoardView.new(@board)
   end
 
   def play_game
     until @board.winner? || @board.tie?
     sleep(delay)
-    board.print_board
+    @view.print_board
     @current_player.play_turn
-    advance_turn
     switch_player
     end
-    board.print_board
+    @view.print_board
     print_winner_message
   end
 
@@ -41,7 +42,7 @@ class Game
     else
       puts "Cats game!"
     end
-    ask_to_play
+    # ask_to_play
   end
 
   def ask_to_play

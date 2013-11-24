@@ -3,12 +3,11 @@ require_relative 'player'
 class HumanPlayer < Player
 
 attr_reader :board, :mark_value
-attr_accessor :turn
+
 
   def initialize(board, mark_value=1)
     @board = board
     @mark_value = mark_value
-    @turn = 0
   end
 
   def play_turn

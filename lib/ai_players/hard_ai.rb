@@ -2,15 +2,16 @@ require_relative '../player.rb'
 
 class HardAi < Player
 
+require 'debugger'
+
 attr_reader :board, :mark_value, :opposing_mark_value
-attr_accessor :turn, :coordinates
+attr_accessor :coordinates
 
   def initialize(board,mark_value=-1)
     @board=board
     @mark_value=mark_value
     @opposing_mark_value = -@mark_value
     @coordinates=[]
-    @turn=0
   end
 
   def play_turn
@@ -20,7 +21,7 @@ attr_accessor :turn, :coordinates
       mark_space(check_for_winner(@opposing_mark_value))
     elsif check_for_two_way_fork && check_inputs(check_for_two_way_fork)
       mark_space(check_for_two_way_fork)
-    elsif @turn == 0
+    elsif @board.player_first_turn?(@mark_value)
       play_first_turn
     elsif check_for_fork(@opposing_mark_value)
       mark_space(check_for_fork(@opposing_mark_value))
@@ -67,7 +68,7 @@ attr_accessor :turn, :coordinates
       @board.mark_square(valid_move[0],valid_move[1],mark_value)
       winner << valid_move if @board.winner?
       @board.mark_square(valid_move[0],valid_move[1],0)
-      break if !winner.empty?
+      break if not winner.empty?
     end
     return winner[0] if !winner.empty?
     return false if winner.empty?
