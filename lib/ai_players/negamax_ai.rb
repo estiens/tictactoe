@@ -1,4 +1,11 @@
-class NegamaxAI
+class NegamaxAi < Player
+
+  def initialize(board,mark_value=X)
+    @board=board
+    @mark_value=mark_value
+    @opposing_mark_value = -@mark_value
+    @coordinates=[]
+  end
 
 def play_turn
 end

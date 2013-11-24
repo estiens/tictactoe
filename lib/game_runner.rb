@@ -3,6 +3,7 @@ require_relative "human_player"
 require_relative "./ai_players/hard_ai"
 require_relative "./ai_players/medium_ai"
 require_relative "./ai_players/dumb_ai"
+require_relative "./ai_players/negamax_ai"
 
 X = 1
 O = -1
@@ -81,8 +82,8 @@ class Runner
 
 end
 
-runner=Runner.new
-runner.simulate_games
+# runner=Runner.new
+# runner.simulate_games
 
 
 
