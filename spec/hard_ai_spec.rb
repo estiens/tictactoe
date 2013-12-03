@@ -5,8 +5,8 @@ describe "Hard Ai" do
   let (:hardplayer) {HardAi.new(board,X)}
 
   it "should be able to make a valid move" do
-  hardplayer.play_turn
-  expect(board.board.flatten).to include(X)
+    hardplayer.play_turn
+    expect(board.board.flatten).to include(X)
   end
 
   it "should play a middle square for first turn if it isn't taken" do
