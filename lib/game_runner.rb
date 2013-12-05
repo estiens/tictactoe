@@ -4,20 +4,28 @@ require_relative "./ai_players/hard_ai"
 require_relative "./ai_players/medium_ai"
 require_relative "./ai_players/dumb_ai"
 require_relative "./ai_players/negamax_ai"
+require_relative "io_parser"
 
 X = 1
 O = -1
 N = 0
 
 class Runner
-  attr_reader :game
+  attr_accessor :game, :board, :parser
 
   def initialize
-    @game = Game.new
+    @board=Board.new
+    @parser = IoParser.new(@board)
+  end
+
+  def initialize_game
+    player1 = HumanPlayer.new(@board)
+    player2 = @parser.get_difficulty_level
+    @game = Game.new(board,player1,player2,player1)
   end
 
   def run_game
-    choose_first_player
+    # choose_first_player
     @game.play_game
   end
 
@@ -42,26 +50,7 @@ class Runner
   private
 
   def choose_first_player
-    puts "Would you like the [H]uman to start first, or the [C]omputer, or just [W]atch?"
-    player_choice=gets.chomp.downcase
-    case player_choice
-      when "h"
-        @game.player1 = HumanPlayer.new(@game.board)
-        @game.current_player = @game.player1
-        choose_difficulty
-      when "c"
-        @game.player1 = HumanPlayer.new(@game.board)
-        choose_difficulty
-        @game.current_player=@game.player2
-      when "w"
-        @game.player1 = HardAi.new(@game.board,1)
-        @game.player2 = HardAi.new(@game.board,-1)
-        @game.delay = 0.5
-        @game.current_player = @game.player1
-      else
-        puts "Sorry, I need a [C] or [H] or [W]"
-        choose_first_player
-    end
+
   end
 
   def choose_difficulty

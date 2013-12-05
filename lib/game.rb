@@ -2,12 +2,15 @@ require_relative "board"
 require_relative "board_view"
 
 class Game
-  attr_accessor :board, :player1, :player2, :current_player, :delay
+  attr_accessor :board, :player1, :player2, :current_player, :delay, :view
 
-  def initialize
-    @board = Board.new
+  def initialize(board,player1,player2,currentplayer)
+    @board = board
     @delay = 0
     @view = BoardView.new(@board)
+    @player1 = player1
+    @player2 = player2
+    @currentplayer=currentplayer
   end
 
   def play_game
